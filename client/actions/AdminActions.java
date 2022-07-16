@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import client.services.CreateMealService;
+import client.services.ListMealsService;
 
 public class AdminActions {
   public AdminActions(
@@ -46,8 +47,9 @@ public class AdminActions {
           case "criar":
             new CreateMealService(inStream, outStream);
           break;
-          // case "listar":
-          // break;
+          case "listar":
+            new ListMealsService(inStream, outStream);
+          break;
           // case "remover":
           // break;
           default:

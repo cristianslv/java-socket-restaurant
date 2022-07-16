@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import multiserver.services.ListMealsService;
 import multiserver.services.CreateMealService;
 import multiserver.services.CreateUserService;
 
@@ -33,10 +34,16 @@ class ClientHandler extends Thread {
       while ((clientMessage = inStream.readUTF()) != null) {
         String[] splitClientMessage = clientMessage.split("/");
         String clientAction = splitClientMessage[0];
+        outStream.writeUTF("to checagasd " + splitClientMessage[0]);
 
         switch (clientAction) {
           case "create":
             CreateMealService.execute(splitClientMessage[1]);
+          break;
+          case "list":
+          System.out.println("checou");  
+          ListMealsService.execute(inStream, outStream);
+
           break;
           default:
           break;

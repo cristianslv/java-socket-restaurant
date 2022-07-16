@@ -44,4 +44,9 @@ public class Meal {
   public void setDescription(String description) {
     this.description = description;
   }
+
+  @Override
+  public String toString() {
+    return "[Nome: " + this.name + ", Preço: " + this.price + ", Descrição: " + this.description + "]";
+  }
 }
