@@ -15,8 +15,9 @@ public class MealRepository {
   public void save(Meal meal) {
     try {
       FileWriter mealsDB = new FileWriter("meals.csv", true);
+      int id = this.getNextId();
 
-      mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
+      mealsDB.append(String.join(",", String.valueOf(id), meal.getName(), meal.getPrice(), meal.getDescription()));
       mealsDB.append("\n");
 
       mealsDB.flush();
@@ -26,15 +27,48 @@ public class MealRepository {
     }
   }
 
-  public void list(DataInputStream inStream, DataOutputStream outStream) {
+  public void list(DataOutputStream outStream) {
     try {
-      Scanner scanner = new Scanner(new File("meals.csv"));
-			while (scanner.hasNextLine()) {
-				System.out.println(scanner.nextLine());
+      String line = "";
+			File file = new File("meals.csv");
+      FileReader fileReader = new FileReader(file);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+      while((line = bufferedReader.readLine()) != null) {
+        String[] values = line.split(",");
+        Meal meal = new Meal(values[0], values[1], values[2], values[3]);
+        System.out.println(meal.toString());
+        
+        outStream.writeUTF(meal.toString());
+        outStream.flush();
 			}
-			scanner.close();
+
+      outStream.writeUTF("exit");
+      outStream.flush();
+
+			bufferedReader.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }  
+  } 
+  
+  private int getNextId() {
+    try {
+      int count = 0;
+      File file = new File("meals.csv");
+      FileReader fileReader = new FileReader(file);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+      while(bufferedReader.readLine() != null) {
+				count++;
+			}
+
+      bufferedReader.close();
+			return count + 1;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return 0;
+  } 
 }

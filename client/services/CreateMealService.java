@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class CreateMealService {
-  public CreateMealService(DataInputStream inStream, DataOutputStream outStream) 
+  public static void execute(DataInputStream inStream, DataOutputStream outStream) 
   {
     String message;
     Console messageReceiver = System.console();

@@ -34,22 +34,19 @@ class ClientHandler extends Thread {
       while ((clientMessage = inStream.readUTF()) != null) {
         String[] splitClientMessage = clientMessage.split("/");
         String clientAction = splitClientMessage[0];
-        outStream.writeUTF("to checagasd " + splitClientMessage[0]);
 
         switch (clientAction) {
           case "create":
             CreateMealService.execute(splitClientMessage[1]);
           break;
           case "list":
-          System.out.println("checou");  
-          ListMealsService.execute(inStream, outStream);
-
+            ListMealsService.execute(outStream);
           break;
           default:
           break;
         }
 
-        outStream.writeUTF("mano você me enviu isso? " + clientMessage);
+        outStream.writeUTF("Já passou pela action " + clientAction);
         outStream.flush();
       }
 

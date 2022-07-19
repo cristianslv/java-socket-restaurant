@@ -1,23 +1,30 @@
 package client.services;
 
-import java.io.Console;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ListMealsService {
-  public ListMealsService(DataInputStream inStream, DataOutputStream outStream) 
+  public static void execute(DataInputStream inStream, DataOutputStream outStream) 
   {
     System.out.println("___________________________\n\n");
     System.out.println("Todos os items do cardápio!\n");
     System.out.println("___________________________\n");
     
     try {
+      String message = "";
+
       outStream.writeUTF("list/");
       outStream.flush();
 
-      while(inStream.readUTF().equals("null")) {
-        System.out.println(inStream.readUTF() + "\n");
+      while(true) {
+        message = inStream.readUTF();
+
+        if (message.equals("exit")) {
+          break;
+        }
+
+        System.out.println(message + "\n");
       } 
     } catch (IOException e) {
       e.printStackTrace();

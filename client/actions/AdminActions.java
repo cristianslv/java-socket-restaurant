@@ -45,10 +45,10 @@ public class AdminActions {
   
         switch (adminMessage) {
           case "criar":
-            new CreateMealService(inStream, outStream);
+            CreateMealService.execute(inStream, outStream);
           break;
           case "listar":
-            new ListMealsService(inStream, outStream);
+            ListMealsService.execute(inStream, outStream);
           break;
           // case "remover":
           // break;

@@ -10,7 +10,6 @@ public class Server {
 
     public static void main(String[] args) {      
         try {
-            FileWriter mealsDB = new FileWriter("meals.csv");
             FileWriter ordersDB = new FileWriter("orders.csv");
             FileWriter clientsDB = new FileWriter("clients.csv");
         } catch (IOException e1) {
