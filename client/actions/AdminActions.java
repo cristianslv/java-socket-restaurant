@@ -51,11 +51,10 @@ public class AdminActions {
           case "listar":
             ListMealsService.execute(inStream, outStream);
           break;
-          case "remover":
-            String[] values = adminMessage.split(",");
-            DeleteMealService.execute(inStream, outStream, values[1]);
-          break;
           default:
+            if (adminMessage.contains("remover,")) {        
+              DeleteMealService.execute(inStream, outStream, adminMessage);
+            }
           break;
         }
 

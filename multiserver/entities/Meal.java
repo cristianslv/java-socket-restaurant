@@ -47,6 +47,6 @@ public class Meal {
 
   @Override
   public String toString() {
-    return "[Nome: " + this.name + ", Preço: " + this.price + ", Descrição: " + this.description + "]";
+    return "[ID: " + this.id + ", Nome: " + this.name + ", Preço: " + this.price + ", Descrição: " + this.description + "]";
   }
 }

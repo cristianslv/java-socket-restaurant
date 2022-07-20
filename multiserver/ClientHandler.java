@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import multiserver.services.DeleteMealService;
 import multiserver.services.ListMealsService;
 import multiserver.services.CreateMealService;
 import multiserver.services.CreateUserService;
@@ -42,9 +43,9 @@ class ClientHandler extends Thread {
           case "list":
             ListMealsService.execute(outStream);
           break;
-          // case "delete":
-          //   DeleteMealsService.execute(outStream, splitClientMessage[1]);
-          // break;
+          case "delete":
+            DeleteMealService.execute(outStream, splitClientMessage[1]);
+          break;
           default:
           break;
         }

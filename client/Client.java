@@ -9,6 +9,9 @@ import client.types.Customer;
 import client.types.PassiveEmployee;
 
 public class Client {
+  private static int serverPort = 59091;
+  private static String ipv4Ethernet = "127.0.0.1";
+
   public static void main(String[] args) {
     String clientMessage;
     Console clientMessageReceiver = System.console();
@@ -28,15 +31,15 @@ public class Client {
     switch(clientMessage) {
       case "adm adm":
         AdminEmployee adm = new AdminEmployee();
-        adm.startConnection("127.0.0.1", 59091);
+        adm.startConnection(ipv4Ethernet, serverPort);
         break;
       case "pass pass":
         PassiveEmployee pass = new PassiveEmployee();
-        pass.startConnection("127.0.0.1", 59091);
+        pass.startConnection(ipv4Ethernet, serverPort);
         break;
       case "":
         Customer customer = new Customer();
-        customer.startConnection("127.0.0.1", 59091);
+        customer.startConnection(ipv4Ethernet, serverPort);
         break;
       default:
         break;
