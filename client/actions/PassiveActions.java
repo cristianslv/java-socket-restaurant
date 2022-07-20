@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import client.services.ListMealsService;
+
 public class PassiveActions {
   public PassiveActions(
     Socket clientSocket, 
@@ -26,20 +28,15 @@ public class PassiveActions {
       new Timer().scheduleAtFixedRate(new TimerTask(){
         @Override
         public void run(){
-          try {
-            System.out.println("__________________\n\n");
-            System.out.println("Bem vindo Passivo!\n");
-            System.out.println("__________________\n");
-            System.out.println("Sua função é auxiliar na visualização de pedidos não finalizados!");
-            System.out.println("Portanto, a cada 5 segundos, tais pedidos serão listados aqui.\n");
+          System.out.println("__________________\n\n");
+          System.out.println("Bem vindo Passivo!\n");
+          System.out.println("__________________\n");
+          System.out.println("Sua função é auxiliar na visualização de pedidos não finalizados!");
+          System.out.println("Portanto, a cada 10 segundos, tais pedidos serão listados aqui.\n");
 
-            outStream.writeUTF("apicall");
-            System.out.println(inStream.readUTF());
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          ListMealsService.execute(inStream, outStream);
         }
-      },0,5000);
+      },0,10000);
     } catch (IOException e) {
       e.printStackTrace();
     }

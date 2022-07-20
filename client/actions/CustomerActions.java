@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
+import client.services.ListMealsService;
+
 public class CustomerActions {
   public CustomerActions(
     Socket clientSocket, 
@@ -39,11 +41,13 @@ public class CustomerActions {
           continue;
         }
 
-        outStream.writeUTF(customerMessage);
-        outStream.flush();
-  
-        String serverMessage=inStream.readUTF();
-        System.out.println(serverMessage);
+        switch (customerMessage) {
+          case "listar":
+            ListMealsService.execute(inStream, outStream);
+          break;
+          default:
+          break;
+        }
       } while(!customerMessage.equals("exit"));
       
       inStream.close();
