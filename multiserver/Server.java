@@ -26,19 +26,9 @@ public class Server {
                 new ClientHandler(serverSocket.accept(), socketCounter).start();
             }
         } catch (IOException e) {
-            if(e.getMessage().contains("asd")) {
+            if(e.getMessage().contains("Connection reset")) {
                 System.out.println("Cliente desconectado!");
-            }
-
-            e.printStackTrace();
-        }
-    }
-
-    public static void stop() {
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            } 
         }
     }
 }

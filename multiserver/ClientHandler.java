@@ -37,11 +37,14 @@ class ClientHandler extends Thread {
 
         switch (clientAction) {
           case "create":
-            CreateMealService.execute(splitClientMessage[1]);
+            CreateMealService.execute(outStream, splitClientMessage[1]);
           break;
           case "list":
             ListMealsService.execute(outStream);
           break;
+          // case "delete":
+          //   DeleteMealsService.execute(outStream, splitClientMessage[1]);
+          // break;
           default:
           break;
         }

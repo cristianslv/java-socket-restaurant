@@ -6,8 +6,8 @@ import multiserver.repositories.MealRepository;
 
 public class ListMealsService {
   public static void execute(DataOutputStream outStream) {
-    MealRepository mealRepository = new MealRepository();
+    MealRepository mealRepository = new MealRepository(outStream);
     
-    mealRepository.list(outStream);
+    mealRepository.list();
   }
 }

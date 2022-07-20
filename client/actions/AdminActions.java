@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import client.services.CreateMealService;
+import client.services.DeleteMealService;
 import client.services.ListMealsService;
 
 public class AdminActions {
@@ -50,8 +51,10 @@ public class AdminActions {
           case "listar":
             ListMealsService.execute(inStream, outStream);
           break;
-          // case "remover":
-          // break;
+          case "remover":
+            String[] values = adminMessage.split(",");
+            DeleteMealService.execute(inStream, outStream, values[1]);
+          break;
           default:
           break;
         }

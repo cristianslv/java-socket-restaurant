@@ -1,74 +1,104 @@
 package multiserver.repositories;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import multiserver.entities.Meal;
 
 public class MealRepository {
+  DataOutputStream outStream;
+
+  public MealRepository(DataOutputStream outStream) {
+    this.outStream = outStream;
+  }
+
   public void save(Meal meal) {
+    int id = this.getNextId();
+
     try {
       FileWriter mealsDB = new FileWriter("meals.csv", true);
-      int id = this.getNextId();
 
       mealsDB.append(String.join(",", String.valueOf(id), meal.getName(), meal.getPrice(), meal.getDescription()));
       mealsDB.append("\n");
 
+      outStream.writeUTF("Sucesso! Um item foi criado no cardápio.");
+      outStream.flush();
+
       mealsDB.flush();
       mealsDB.close();
-    } catch (IOException e) {
+    } catch (IOException e) {  
+      this.handleIOException(" Não foi possível criar um item no cardápio.");
       e.printStackTrace();
     }
   }
 
-  public void list(DataOutputStream outStream) {
+  public void list() {
+    List<Meal> meals = this.getMeals();
+    
     try {
-      String line = "";
-			File file = new File("meals.csv");
-      FileReader fileReader = new FileReader(file);
-      BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
-      while((line = bufferedReader.readLine()) != null) {
-        String[] values = line.split(",");
-        Meal meal = new Meal(values[0], values[1], values[2], values[3]);
+      for (Meal meal : meals) {
         System.out.println(meal.toString());
         
         outStream.writeUTF(meal.toString());
         outStream.flush();
-			}
+      }
 
       outStream.writeUTF("exit");
       outStream.flush();
-
-			bufferedReader.close();
     } catch (IOException e) {
+      this.handleIOException(" Não foi possível concluir a listagem de items do cardápio.");
       e.printStackTrace();
     }
   } 
   
   private int getNextId() {
+    List<Meal> meals = this.getMeals();
+    Meal lastMeal = meals.get(meals.size() - 1);
+
+    return Integer.valueOf(lastMeal.getId()) + 1;
+  } 
+
+  private List<Meal> getMeals() {
+    String line = "";
+    List<Meal> meals = new ArrayList<>();
+    
     try {
-      int count = 0;
-      File file = new File("meals.csv");
+			File file = new File("meals.csv");
       FileReader fileReader = new FileReader(file);
       BufferedReader bufferedReader = new BufferedReader(fileReader);
 			
-      while(bufferedReader.readLine() != null) {
-				count++;
+      while((line = bufferedReader.readLine()) != null) {
+        String[] mealRow = line.split(",");
+
+        Meal meal = new Meal(mealRow[0], mealRow[1], mealRow[2], mealRow[3]);
+
+        meals.add(meal);
 			}
 
       bufferedReader.close();
-			return count + 1;
+
+      return meals;
     } catch (IOException e) {
+      this.handleIOException(" Não foi possível resgatar a lista de items no cardápio.");
       e.printStackTrace();
     }
 
-    return 0;
-  } 
+    return Collections.emptyList();
+  }
+
+  private void handleIOException(String message) {
+    try {
+      outStream.writeUTF("Erro!" + message);
+      outStream.flush();
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
+  }
 }
