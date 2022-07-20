@@ -11,6 +11,7 @@ import java.util.List;
 import client.services.CreateMealService;
 import client.services.DeleteMealService;
 import client.services.ListMealsService;
+import client.services.UpdateMealService;
 
 public class AdminActions {
   public AdminActions(
@@ -21,7 +22,7 @@ public class AdminActions {
     try {
       String adminMessage;
       Console adminMessageReceiver = System.console();
-      List<String> allowedOptions = Arrays.asList("listar","criar");      
+      List<String> allowedOptions = Arrays.asList("listar","criar","atualizar");      
          
       outStream.writeUTF("admin");
       outStream.flush();
@@ -36,7 +37,8 @@ public class AdminActions {
         System.out.println("Ações diponíveis:");
         System.out.println("Criar item no cardápio (criar)");
         System.out.println("Listar itens do cardápio (listar)");
-        System.out.println("Remover item do cardápio (remover,id)\n");
+        System.out.println("Remover item do cardápio (remover,id)");
+        System.out.println("Atualizar item do cardápio (atualizar)\n");
         
         adminMessage =  adminMessageReceiver.readLine("Digite a sentença de forma correta aqui: ");
         
@@ -50,6 +52,9 @@ public class AdminActions {
           break;
           case "listar":
             ListMealsService.execute(inStream, outStream);
+          break;
+          case "atualizar":
+            UpdateMealService.execute(inStream, outStream);
           break;
           default:
             if (adminMessage.contains("remover,")) {        

@@ -43,24 +43,30 @@ public class MealRepository {
   public void delete(String id) {
     List<Meal> meals = this.getMeals();
 
-    meals = meals.stream().filter(meal -> !meal.getId().equals(id)).collect(Collectors.toList());
-
-    try {
-      FileWriter mealsDB = new FileWriter("meals.csv");
-
-      for (Meal meal : meals) {
-        mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
-        mealsDB.append("\n");
+    Meal foundMeal = meals.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
+    
+    if (foundMeal != null) {
+      meals = meals.stream().filter(meal -> !meal.getId().equals(id)).collect(Collectors.toList());
+      
+      try {
+        FileWriter mealsDB = new FileWriter("meals.csv");
+  
+        for (Meal meal : meals) {
+          mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
+          mealsDB.append("\n");
+        }
+  
+        outStream.writeUTF("Sucesso! Um item deletado do cardápio.");
+        outStream.flush();
+  
+        mealsDB.flush();
+        mealsDB.close();
+      } catch (IOException e) {  
+        this.handleIOException(" Não foi possível deletar um item no cardápio.");
+        e.printStackTrace();
       }
-
-      outStream.writeUTF("Sucesso! Um item deletado do cardápio.");
-      outStream.flush();
-
-      mealsDB.flush();
-      mealsDB.close();
-    } catch (IOException e) {  
-      this.handleIOException(" Não foi possível deletar um item no cardápio.");
-      e.printStackTrace();
+    } else {
+      this.handleIOException(" Não foi possível encontrar este item no cardápio.");
     }
   }
 
