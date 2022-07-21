@@ -62,12 +62,6 @@ public class AdminActions {
             }
           break;
         }
-
-        outStream.writeUTF(adminMessage);
-        outStream.flush();
-  
-        String serverMessage=inStream.readUTF();
-        System.out.println(serverMessage);
       } while(!adminMessage.equals("exit"));
       
       inStream.close();

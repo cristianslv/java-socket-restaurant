@@ -70,13 +70,52 @@ public class MealRepository {
     }
   }
 
+  public void update(Meal updatedMeal) {
+    List<Meal> meals = this.getMeals();
+
+    Meal foundMeal = meals
+      .stream()
+      .filter(meal -> meal.getId().equals(updatedMeal.getId()))
+      .findAny()
+      .orElse(null);
+    
+    if (foundMeal != null) {
+      for (Meal meal : meals) {
+        if (meal.getId().equals(updatedMeal.getId())) {
+          meal.setId(updatedMeal.getId());
+          meal.setName(updatedMeal.getName());
+          meal.setPrice(updatedMeal.getPrice());
+          meal.setDescription(updatedMeal.getDescription());
+        }
+      }
+      
+      try {
+        FileWriter mealsDB = new FileWriter("meals.csv");
+  
+        for (Meal meal : meals) {
+          mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
+          mealsDB.append("\n");
+        }
+  
+        outStream.writeUTF("Sucesso! O item foi atualizado.");
+        outStream.flush();
+  
+        mealsDB.flush();
+        mealsDB.close();
+      } catch (IOException e) {  
+        this.handleIOException(" Não foi possível atualizar este item.");
+        e.printStackTrace();
+      }
+    } else {
+      this.handleIOException(" Não foi possível encontrar este item no cardápio.");
+    }
+  }
+
   public void list() {
     List<Meal> meals = this.getMeals();
     
     try {
       for (Meal meal : meals) {
-        System.out.println(meal.toString());
-        
         outStream.writeUTF(meal.toString());
         outStream.flush();
       }

@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import multiserver.services.DeleteMealService;
 import multiserver.services.ListMealsService;
+import multiserver.services.UpdateMealService;
 import multiserver.services.CreateMealService;
 import multiserver.services.CreateUserService;
 
@@ -46,12 +47,12 @@ class ClientHandler extends Thread {
           case "delete":
             DeleteMealService.execute(outStream, splitClientMessage[1]);
           break;
+          case "update":
+            UpdateMealService.execute(outStream, splitClientMessage[1]);
+          break;
           default:
           break;
         }
-
-        outStream.writeUTF("Já passou pela action " + clientAction);
-        outStream.flush();
       }
 
       inStream.close();

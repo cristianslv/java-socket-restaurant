@@ -23,7 +23,7 @@ public class UpdateMealService {
       message = messageReceiver.readLine("Digite a sentença de forma correta aqui: ");
 
       String[] mealInformations = message.split(",");
-      System.out.println(mealInformations[0] +"/"+ mealInformations[3]);
+      
       if (mealInformations.length == 4) {
         try {
           outStream.writeUTF("update/"+message);
