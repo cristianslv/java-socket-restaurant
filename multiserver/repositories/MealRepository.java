@@ -132,7 +132,7 @@ public class MealRepository {
     List<Meal> meals = this.getMeals();
     Meal lastMeal = meals.get(meals.size() - 1);
 
-    return Integer.valueOf(lastMeal.getId()) + 1;
+    return lastMeal != null ? Integer.valueOf(lastMeal.getId()) + 1 : 1;
   } 
 
   private List<Meal> getMeals() {

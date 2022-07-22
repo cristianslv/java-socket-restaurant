@@ -9,6 +9,7 @@ import multiserver.services.DeleteMealService;
 import multiserver.services.ListMealsService;
 import multiserver.services.UpdateMealService;
 import multiserver.services.CreateMealService;
+import multiserver.services.CreateOrderService;
 import multiserver.services.CreateUserService;
 
 class ClientHandler extends Thread {
@@ -40,6 +41,9 @@ class ClientHandler extends Thread {
         switch (clientAction) {
           case "create":
             CreateMealService.execute(outStream, splitClientMessage[1]);
+          break;
+          case "createorder":
+            CreateOrderService.execute(outStream, splitClientMessage[1], splitClientMessage[2]);
           break;
           case "list":
             ListMealsService.execute(outStream);

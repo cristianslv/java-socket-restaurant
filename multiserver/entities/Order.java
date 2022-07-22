@@ -2,12 +2,12 @@ package multiserver.entities;
 
 public class Order {
   private String id;
-  private String mealId;
+  private String meals;
   private String clientId;
 
-  public Order(String id, String mealId, String clientId) {
+  public Order(String id, String meals, String clientId) {
     this.id = id;
-    this.mealId = mealId;
+    this.meals = meals;
     this.clientId = clientId;
   }
 
@@ -15,8 +15,8 @@ public class Order {
     return this.id;
   }
 
-  public String getMealId() {
-    return this.mealId;
+  public String getMeals() {
+    return this.meals;
   }
 
   public String getClientId() {
@@ -28,7 +28,7 @@ public class Order {
   }
 
   public void setMealId(String mealId) {
-    this.mealId = mealId;
+    this.meals = mealId;
   }
 
   public void setClientId(String clientId) {
