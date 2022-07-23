@@ -152,8 +152,10 @@ public class OrderRepository {
     
     try {
       for (Order order : orders) {
-        outStream.writeUTF(order.toString());
-        outStream.flush();
+        if (!order.getStatus().equals("2")) {
+          outStream.writeUTF(order.toString());
+          outStream.flush();
+        }
       }
 
       outStream.writeUTF("exit");

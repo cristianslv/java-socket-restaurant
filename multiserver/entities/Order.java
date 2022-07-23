@@ -33,8 +33,8 @@ public class Order {
     this.id = id;
   }
 
-  public void setMealId(String mealId) {
-    this.meals = mealId;
+  public void setMeals(String meals) {
+    this.meals = meals;
   }
 
   public void setStatus(String status) {
@@ -43,5 +43,26 @@ public class Order {
 
   public void setClientId(String clientId) {
     this.clientId = clientId;
+  }
+
+  @Override
+  public String toString() {
+    String trueStatus = "";
+
+    switch (this.status) {
+      case "0":
+        trueStatus = "Aguardando confirmação";
+      break;
+      case "1":
+        trueStatus = "Pedido confirmado";
+      break;
+      case "2":
+        trueStatus = "Pedido finalizado";
+      break;
+      default:
+      break;
+    }
+
+    return "[ID: " + this.id + ", IDs dos Items: " + this.meals + ", Status: " + trueStatus + ", ID do cliente: " + this.clientId + "]";
   }
 }

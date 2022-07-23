@@ -1,16 +1,13 @@
 package client.actions;
 
-import java.io.Console;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import client.services.ListMealsService;
+import client.services.ListOrdersService;
 
 public class PassiveActions {
   public PassiveActions(
@@ -34,7 +31,7 @@ public class PassiveActions {
           System.out.println("Sua função é auxiliar na visualização de pedidos não finalizados!");
           System.out.println("Portanto, a cada 10 segundos, tais pedidos serão listados aqui.\n");
 
-          ListMealsService.execute(inStream, outStream);
+          ListOrdersService.execute(inStream, outStream);
         }
       },0,10000);
     } catch (IOException e) {
