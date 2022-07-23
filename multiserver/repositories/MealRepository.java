@@ -135,7 +135,7 @@ public class MealRepository {
     return lastMeal != null ? Integer.valueOf(lastMeal.getId()) + 1 : 1;
   } 
 
-  private List<Meal> getMeals() {
+  public List<Meal> getMeals() {
     String line = "";
     List<Meal> meals = new ArrayList<>();
     

@@ -7,9 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import multiserver.entities.Meal;
 import multiserver.entities.Order;
 
 public class OrderRepository {
@@ -21,19 +24,50 @@ public class OrderRepository {
 
   public void save(String meals, String clientId) {
     int id = this.getNextId();
-System.out.println("aqui");
+
     try {
-      // TODO list and filter orders by id
+      List<Meal> requiredMeals = this.getMealsByIds(meals);
+
+      outStream.writeUTF("\n\n______________________________\n");
+      outStream.flush();
+
+      outStream.writeUTF("Você pediu os seguintes items:\n");
+      outStream.flush();
+
+      outStream.writeUTF("______________________________\n\n");
+      outStream.flush();
+
+      for (Meal requiredMeal : requiredMeals) {
+        outStream.writeUTF(requiredMeal.toString());
+        outStream.flush();
+      }
+
       String[] mealsIds = meals.split(",");
 
       FileWriter mealsDB = new FileWriter("orders.csv", true);
 
-      mealsDB.append(String.join(",", String.valueOf(id), String.join("|", mealsIds), clientId));
+      mealsDB.append(String.join(",", String.valueOf(id), String.join("|", mealsIds), clientId, "0"));
       mealsDB.append("\n");
 
-      outStream.writeUTF("Sucesso! Um pedido foi criado.");
+
+      outStream.writeUTF("\n\n______________________________\n");
       outStream.flush();
 
+      outStream.writeUTF("Sucesso! Um pedido foi criado e seu status é: AGUARDANDO.");
+      outStream.flush();
+      
+      outStream.writeUTF("______________________________\n\n");
+      outStream.flush();
+
+      outStream.writeUTF("\n\n______________________________\n");
+      outStream.flush();
+      
+      outStream.writeUTF("Aguarde até que um funcionário lhe responda.");
+      outStream.flush();
+      
+      outStream.writeUTF("______________________________\n\n");
+      outStream.flush();
+      
       mealsDB.flush();
       mealsDB.close();
     } catch (IOException e) {  
@@ -149,7 +183,7 @@ System.out.println("aqui");
       while((line = bufferedReader.readLine()) != null) {
         String[] orderRow = line.split(",");
 
-        Order order = new Order(orderRow[0], orderRow[1], orderRow[2]);
+        Order order = new Order(orderRow[0], orderRow[1], orderRow[2], orderRow[3]);
 
         orders.add(order);
 			}
@@ -163,6 +197,15 @@ System.out.println("aqui");
     }
 
     return Collections.emptyList();
+  }
+
+  private List<Meal> getMealsByIds(String meals) {
+    MealRepository mealRepository = new MealRepository(outStream);
+
+    String[] mealsIds = meals.split(",");
+    List<Meal> mealsList = mealRepository.getMeals();
+    
+    return mealsList.stream().filter(meal -> Arrays.asList(mealsIds).contains(meal.getId())).collect(Collectors.toList());
   }
 
   private void handleIOException(String message) {
