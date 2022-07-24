@@ -6,12 +6,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import multiserver.Server;
 import multiserver.entities.Meal;
 import multiserver.entities.Order;
 
@@ -53,7 +55,7 @@ public class OrderRepository {
       outStream.writeUTF("\n\n______________________________\n");
       outStream.flush();
 
-      outStream.writeUTF("Sucesso! Um pedido foi criado e seu status é: AGUARDANDO.");
+      outStream.writeUTF("Sucesso! Um pedido foi criado e seu status é: AGUARDANDO CONFIRMAÇÃO.");
       outStream.flush();
       
       outStream.writeUTF("______________________________\n\n");
@@ -76,76 +78,73 @@ public class OrderRepository {
     }
   }
 
-  // public void delete(String id) {
-  //   List<Meal> meals = this.getOrders();
+  public void delete(String id) {
+    List<Order> orders = this.getOrders();
 
-  //   Meal foundMeal = meals.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
+    Order foundOrder = orders.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
     
-  //   if (foundMeal != null) {
-  //     meals = meals.stream().filter(meal -> !meal.getId().equals(id)).collect(Collectors.toList());
+    if (foundOrder != null) {
+      orders = orders.stream().filter(meal -> !meal.getId().equals(id)).collect(Collectors.toList());
       
-  //     try {
-  //       FileWriter mealsDB = new FileWriter("meals.csv");
+      try {
+        FileWriter ordersDB = new FileWriter("orders.csv");
   
-  //       for (Meal meal : meals) {
-  //         mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
-  //         mealsDB.append("\n");
-  //       }
+        for (Order order : orders) {
+          ordersDB.append(String.join(",", order.getId(), order.getMeals(), order.getClientId(), order.getStatus()));
+          ordersDB.append("\n");
+        }
   
-  //       outStream.writeUTF("Sucesso! Um item deletado do cardápio.");
-  //       outStream.flush();
+        outStream.writeUTF("Sucesso! Um pedido deletado.");
+        outStream.flush();
   
-  //       mealsDB.flush();
-  //       mealsDB.close();
-  //     } catch (IOException e) {  
-  //       this.handleIOException(" Não foi possível deletar um item no cardápio.");
-  //       e.printStackTrace();
-  //     }
-  //   } else {
-  //     this.handleIOException(" Não foi possível encontrar este item no cardápio.");
-  //   }
-  // }
+        ordersDB.flush();
+        ordersDB.close();
+      } catch (IOException e) {  
+        this.handleIOException(" Não foi possível deletar um pedido.");
+        e.printStackTrace();
+      }
+    } else {
+      this.handleIOException(" Não foi possível encontrar este pedido.");
+    }
+  }
 
-  // public void update(Meal updatedMeal) {
-  //   List<Meal> meals = this.getOrders();
+  public void update(Order updatedOrder) {
+    List<Order> orders = this.getOrders();
 
-  //   Meal foundMeal = meals
-  //     .stream()
-  //     .filter(meal -> meal.getId().equals(updatedMeal.getId()))
-  //     .findAny()
-  //     .orElse(null);
+    Order foundOrder = orders
+      .stream()
+      .filter(order -> order.getId().equals(updatedOrder.getId()))
+      .findAny()
+      .orElse(null);
     
-  //   if (foundMeal != null) {
-  //     for (Meal meal : meals) {
-  //       if (meal.getId().equals(updatedMeal.getId())) {
-  //         meal.setId(updatedMeal.getId());
-  //         meal.setName(updatedMeal.getName());
-  //         meal.setPrice(updatedMeal.getPrice());
-  //         meal.setDescription(updatedMeal.getDescription());
-  //       }
-  //     }
+    if (foundOrder != null) {
+      for (Order order : orders) {
+        if (order.getId().equals(updatedOrder.getId())) {
+          order.setStatus(updatedOrder.getStatus());
+        }
+      }
       
-  //     try {
-  //       FileWriter mealsDB = new FileWriter("meals.csv");
+      try {
+        FileWriter ordersDB = new FileWriter("orders.csv");
   
-  //       for (Meal meal : meals) {
-  //         mealsDB.append(String.join(",", meal.getId(), meal.getName(), meal.getPrice(), meal.getDescription()));
-  //         mealsDB.append("\n");
-  //       }
+        for (Order order : orders) {
+          ordersDB.append(String.join(",", order.getId(), order.getMeals(), order.getClientId(), order.getStatus()));
+          ordersDB.append("\n");
+        }
   
-  //       outStream.writeUTF("Sucesso! O item foi atualizado.");
-  //       outStream.flush();
+        outStream.writeUTF("Sucesso! O pedido foi atualizado.");
+        outStream.flush();
   
-  //       mealsDB.flush();
-  //       mealsDB.close();
-  //     } catch (IOException e) {  
-  //       this.handleIOException(" Não foi possível atualizar este item.");
-  //       e.printStackTrace();
-  //     }
-  //   } else {
-  //     this.handleIOException(" Não foi possível encontrar este item no cardápio.");
-  //   }
-  // }
+        ordersDB.flush();
+        ordersDB.close();
+      } catch (IOException e) {  
+        this.handleIOException(" Não foi possível atualizar este pedido.");
+        e.printStackTrace();
+      }
+    } else {
+      this.handleIOException(" Não foi possível encontrar este pedido.");
+    }
+  }
 
   public void list() {
     List<Order> orders = this.getOrders();
@@ -216,6 +215,35 @@ public class OrderRepository {
       outStream.flush();
     } catch (IOException e1) {
       e1.printStackTrace();
+    }
+  }
+
+  public void confirm(String id) {
+    List<Order> orders = this.getOrders();
+
+    Order foundOrder = orders.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
+
+    if (foundOrder != null) {
+      foundOrder.setStatus("1");
+
+      this.update(foundOrder);
+
+      try {
+        Socket clientSocket = Server.sockets.get(foundOrder.getClientId());
+        DataOutputStream someClientOutStream = new DataOutputStream(clientSocket.getOutputStream());
+
+        someClientOutStream.writeUTF("\n\n_______________________________________________________________\n");
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("O pedido foi confirmado e seu status atual é: EM PROCESSAMENTO!");  
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("\n_______________________________________________________________\n\n");
+        someClientOutStream.flush();
+      } catch (IOException e) {
+        this.handleIOException(" Não foi possível envar mensagem à este cliente.");
+        e.printStackTrace();
+      }  
+    } else {
+      this.handleIOException(" Não foi possível encontrar este pedido.");
     }
   }
 }

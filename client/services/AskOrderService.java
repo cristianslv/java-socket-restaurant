@@ -32,8 +32,7 @@ public class AskOrderService {
       while(true) {
         serverMessage = inStream.readUTF();
         
-        if (serverMessage.contains("confirm") 
-          || serverMessage.contains("refuse")
+        if (serverMessage.contains("refuse")
           || serverMessage.contains("finish")) {
            System.out.println(serverMessage);
            break;

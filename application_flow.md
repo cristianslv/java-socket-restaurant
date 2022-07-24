@@ -48,8 +48,9 @@ O que falta:
   [x] Criação de pedido deve listar os itens de cardápio pedidos pelo cliente, e o pedido recebe status 0
   [x] Listar apenas pedidos que estão com status = 0 (aguardando confirmação), status = 1 (confirmados)
   
-  [] Ao criar o socket, armazenar todos eles em um Map de sockets por id, para poder enviar mensagem a esse socket
+  [x] Ao criar o socket, armazenar todos eles em um Map de sockets por id, para poder enviar mensagem a esse socket
 
-  [] Confirmar pedido -> admin realiza a ação, o pedido recebe status = 1 e manda mensagem para o socket cliente
+  [x] Confirmar pedido -> admin realiza a ação, o pedido recebe status = 1 e manda mensagem para o socket cliente
   [] Recusar pedido -> admin realiza a ação, o pedido é excluido e manda mensagem para o socket cliente
   [] Finalizar pedido -> admin realiza a ação, o pedido recebe status = 2 (Finalizado) e manda mensagem para o socket cliente 
+  [] Ao pedir, caso o cliente informe um item que não exista e o array estiver vazio, enviar mensagem de erro

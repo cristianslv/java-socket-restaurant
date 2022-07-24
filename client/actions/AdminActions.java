@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
+import client.services.ConfirmOrderService;
 import client.services.CreateMealService;
 import client.services.DeleteMealService;
 import client.services.ListMealsService;
@@ -22,7 +23,7 @@ public class AdminActions {
     try {
       String adminMessage;
       Console adminMessageReceiver = System.console();
-      List<String> allowedOptions = Arrays.asList("listar","criar","atualizar");      
+      List<String> allowedOptions = Arrays.asList("listar","criar","atualizar","remover,","confirmar,","finalizar,");      
          
       outStream.writeUTF("admin");
       outStream.flush();
@@ -39,10 +40,17 @@ public class AdminActions {
         System.out.println("Listar itens do cardápio (listar)");
         System.out.println("Remover item do cardápio (remover,id)");
         System.out.println("Atualizar item do cardápio (atualizar)\n");
+        System.out.println("Recusar pedido (recusar,id)");
+        System.out.println("Confirmar pedido (confirmar,id)");
+        System.out.println("Finalizar pedido (finalizar,id)\n");
         
         adminMessage =  adminMessageReceiver.readLine("Digite a sentença de forma correta aqui: ");
         
-        if (!allowedOptions.contains(adminMessage) && !adminMessage.contains("remover,")) {
+        if (!allowedOptions.contains(adminMessage)
+        && !adminMessage.contains("remover,")
+        && !adminMessage.contains("confirmar,")
+        && !adminMessage.contains("finalizar,")
+        && !adminMessage.contains("recusar,")) {
           continue;
         }
   
@@ -61,6 +69,18 @@ public class AdminActions {
               DeleteMealService.execute(inStream, outStream, adminMessage);
             }
           break;
+        }
+
+        if (adminMessage.contains("confirmar,")) {        
+          ConfirmOrderService.execute(inStream, outStream, adminMessage);
+        }
+
+        if (adminMessage.contains("finalizar,")) {        
+          DeleteMealService.execute(inStream, outStream, adminMessage);
+        }
+
+        if (adminMessage.contains("recusar,")) {        
+          DeleteMealService.execute(inStream, outStream, adminMessage);
         }
       } while(!adminMessage.equals("exit"));
       

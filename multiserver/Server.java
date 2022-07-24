@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class Server {
     private static int serverPort = 59091;
+    public static Map<String, Socket> sockets = new HashMap<>(); 
     
     public static void main(String[] args) {      
         try {
@@ -20,7 +21,6 @@ public class Server {
         
         try {
             int socketCounter = 0;
-            Map<String, Socket> sockets = new HashMap<>(); 
             ServerSocket serverSocket = new ServerSocket(serverPort);
             
             while (true) {
