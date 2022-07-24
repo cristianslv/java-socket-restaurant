@@ -11,6 +11,7 @@ import java.util.List;
 import client.services.ConfirmOrderService;
 import client.services.CreateMealService;
 import client.services.DeleteMealService;
+import client.services.FinishOrderService;
 import client.services.ListMealsService;
 import client.services.UpdateMealService;
 
@@ -76,7 +77,7 @@ public class AdminActions {
         }
 
         if (adminMessage.contains("finalizar,")) {        
-          DeleteMealService.execute(inStream, outStream, adminMessage);
+          FinishOrderService.execute(inStream, outStream, adminMessage);
         }
 
         if (adminMessage.contains("recusar,")) {        

@@ -239,7 +239,39 @@ public class OrderRepository {
         someClientOutStream.writeUTF("\n_______________________________________________________________\n\n");
         someClientOutStream.flush();
       } catch (IOException e) {
-        this.handleIOException(" Não foi possível envar mensagem à este cliente.");
+        this.handleIOException(" Não foi possível enviar mensagem à este cliente.");
+        e.printStackTrace();
+      }  
+    } else {
+      this.handleIOException(" Não foi possível encontrar este pedido.");
+    }
+  }
+
+  public void finish(String id) {
+    List<Order> orders = this.getOrders();
+
+    Order foundOrder = orders.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
+
+    if (foundOrder != null) {
+      foundOrder.setStatus("2");
+
+      this.update(foundOrder);
+
+      try {
+        Socket clientSocket = Server.sockets.get(foundOrder.getClientId());
+        DataOutputStream someClientOutStream = new DataOutputStream(clientSocket.getOutputStream());
+
+        someClientOutStream.writeUTF("\n\n______________________________________________\n");
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("O pedido foi finalizado e já pode ser buscado!");  
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("\n\n______________________________________________\n");
+        someClientOutStream.flush();
+
+        someClientOutStream.writeUTF("finish");
+        someClientOutStream.flush();
+      } catch (IOException e) {
+        this.handleIOException(" Não foi possível enviar mensagem à este cliente.");
         e.printStackTrace();
       }  
     } else {

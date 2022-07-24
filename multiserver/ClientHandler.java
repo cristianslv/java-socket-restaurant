@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import multiserver.services.DeleteMealService;
+import multiserver.services.FinishOrderService;
 import multiserver.services.ListMealsService;
 import multiserver.services.ListOrdersService;
 import multiserver.services.UpdateMealService;
@@ -61,6 +62,9 @@ class ClientHandler extends Thread {
           break;
           case "confirm":
             ConfirmOrderService.execute(outStream, splitClientMessage[1]);
+          break;
+          case "finish":
+            FinishOrderService.execute(outStream, splitClientMessage[1]);
           break;
           default:
           break;
