@@ -278,4 +278,36 @@ public class OrderRepository {
       this.handleIOException(" Não foi possível encontrar este pedido.");
     }
   }
+
+  public void refuse(String id) {
+    List<Order> orders = this.getOrders();
+
+    Order foundOrder = orders.stream().filter(meal -> meal.getId().equals(id)).findAny().orElse(null);
+
+    if (foundOrder != null) {
+      this.delete(id);
+
+      this.update(foundOrder);
+
+      try {
+        Socket clientSocket = Server.sockets.get(foundOrder.getClientId());
+        DataOutputStream someClientOutStream = new DataOutputStream(clientSocket.getOutputStream());
+
+        someClientOutStream.writeUTF("\n\n_____________________\n");
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("O pedido foi recusado!");  
+        someClientOutStream.flush();
+        someClientOutStream.writeUTF("\n\n_____________________\n");
+        someClientOutStream.flush();
+
+        someClientOutStream.writeUTF("refuse");
+        someClientOutStream.flush();
+      } catch (IOException e) {
+        this.handleIOException(" Não foi possível enviar mensagem à este cliente.");
+        e.printStackTrace();
+      }  
+    } else {
+      this.handleIOException(" Não foi possível encontrar este pedido.");
+    }
+  }
 }

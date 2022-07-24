@@ -1,62 +1,72 @@
 # Client-Server application with Sockets to a restaurant
 
-Simple overview of use/purpose.
+Projeto realizado para compreensão acerca de Sockets. Basicamente, existem quatro atores para utilização: Usuário Admin, Usuário Passivo, Cliente e Servidor.
+
+* Ações do Usuário Admin
+    * Criar|Listar|Remover|Atualizar items do cardápio
+    * Recusar|Confirmar|Finalizar um pedido
+
+* Ações do Usuário Passivo
+    * Listar os pedidos
+
+* Ações do cliente
+    * Listar items do cardápio
+    * Realizar um pedido
+
+* Servidor
+    * Receber requisições
+    * Retornar respostas
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+Todo o código foi escrito em java. Houve a tentativa de utilizar as melhores práticas de clean code e arquitetura, mas há bastante coisa a melhorar.
 
 ## Getting Started
 
+Primeiramente, verifique se a porta 59091 está sendo utilizada pelo SO, caso esteja, utilize outra porta e substitua no arquivo Client.java.
+
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+Versão do java utilizado:
+```
+openjdk 11.0.12 2021-07-20
+OpenJDK Runtime Environment 18.9 (build 11.0.12+7)
+OpenJDK 64-Bit Server VM 18.9 (build 11.0.12+7, mixed mode)
+```
+
+O projeto foi desenvolvido no OS Linux, portanto algumas configurações podem mudar caso o projeto seja rodado no Windows.
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+O projeto pode ser clonando em qualquer pasta do sistema. Basta que essa pasta tenha acesso à variável global java do SO.
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+* Clone o projeto
+* Na pasta onde foi clonado, basta rodar este comando para iniciar o servidor
 ```
-code blocks for commands
+javac multiserver/Server.java
+java Server
+```
+* Na pasta onde foi clonado, basta rodar este comando para ligar o cliente, lembrando que há três tipos de clientes, mas basta seguir o terminar que ele trará mais instruções.
+```
+javac client/Client.java
+java Client
 ```
 
 ## Help
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+Caso haja algum problema para rodar o código pelo terminar, basta rodá-lo pelo VSCode.
+
+* Você deve baixar o VSCode.
+* Você deve baixar a extensão Extension Pack for Java para o VSCode. 
+* Você deve ir até a classe Server.java e clicar em RUN para rodar o servidor.
+* Você deve ir até a classe Client.java e clicar em RUN para rodar o cliente.
 
 ## Authors
 
-Contributors names and contact info
+Cristian Silva
+[@cristianslv](https://github.com/cristianslv)
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Gabriel Duessmann
+[@gabrielduessmann](https://github.com/gabrielduessmann)

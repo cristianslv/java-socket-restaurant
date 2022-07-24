@@ -13,6 +13,7 @@ import client.services.CreateMealService;
 import client.services.DeleteMealService;
 import client.services.FinishOrderService;
 import client.services.ListMealsService;
+import client.services.RefuseOrderService;
 import client.services.UpdateMealService;
 
 public class AdminActions {
@@ -81,7 +82,7 @@ public class AdminActions {
         }
 
         if (adminMessage.contains("recusar,")) {        
-          DeleteMealService.execute(inStream, outStream, adminMessage);
+          RefuseOrderService.execute(inStream, outStream, adminMessage);
         }
       } while(!adminMessage.equals("exit"));
       
