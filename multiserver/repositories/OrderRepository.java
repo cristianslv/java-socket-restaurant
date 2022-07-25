@@ -243,7 +243,7 @@ public class OrderRepository {
         e.printStackTrace();
       }  
     } else {
-      this.handleIOException(" Não foi possível encontrar este pedido.");
+        this.handleIOException(" Não foi possível encontrar este pedido.");
     }
   }
 
@@ -286,8 +286,6 @@ public class OrderRepository {
 
     if (foundOrder != null) {
       this.delete(id);
-
-      this.update(foundOrder);
 
       try {
         Socket clientSocket = Server.sockets.get(foundOrder.getClientId());
