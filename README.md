@@ -40,23 +40,9 @@ O projeto foi desenvolvido no OS Linux, portanto algumas configurações podem m
 
 O projeto pode ser clonando em qualquer pasta do sistema. Basta que essa pasta tenha acesso à variável global java do SO.
 
-### Executing program
-
-* Clone o projeto
-* Na pasta onde foi clonado, basta rodar este comando para iniciar o servidor
-```
-javac multiserver/Server.java
-java Server
-```
-* Na pasta onde foi clonado, basta rodar este comando para ligar o cliente, lembrando que há três tipos de clientes, mas basta seguir o terminar que ele trará mais instruções.
-```
-javac client/Client.java
-java Client
-```
-
 ## Help
 
-Caso haja algum problema para rodar o código pelo terminar, basta rodá-lo pelo VSCode.
+Caso haja algum problema para rodar o código pelo terminal, basta rodá-lo pelo VSCode.
 
 * Você deve baixar o VSCode.
 * Você deve baixar a extensão Extension Pack for Java para o VSCode. 
