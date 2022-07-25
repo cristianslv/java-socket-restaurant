@@ -34,8 +34,7 @@ public class AskOrderService {
         
         if (serverMessage.contains("refuse")
           || serverMessage.contains("finish")) {
-           System.out.println(serverMessage);
-           break;
+          break;
         } else {
           System.out.println(serverMessage);
         }
