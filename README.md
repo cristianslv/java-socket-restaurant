@@ -40,7 +40,7 @@ O projeto foi desenvolvido no OS Linux, portanto algumas configurações podem m
 
 O projeto pode ser clonando em qualquer pasta do sistema. Basta que essa pasta tenha acesso à variável global java do SO.
 
-## Help
+## Executing program
 
 Caso haja algum problema para rodar o código pelo terminal, basta rodá-lo pelo VSCode.
 
